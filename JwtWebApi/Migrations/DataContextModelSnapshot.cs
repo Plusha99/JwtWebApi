@@ -34,7 +34,7 @@ namespace JwtWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -71,11 +71,11 @@ namespace JwtWebApi.Migrations
 
             modelBuilder.Entity("JwtWebApi.Models.Tip", b =>
                 {
-                    b.HasOne("JwtWebApi.Models.User", "User")
+                    b.HasOne("JwtWebApi.Models.User", null)
                         .WithMany("Tips")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("JwtWebApi.Models.User", b =>

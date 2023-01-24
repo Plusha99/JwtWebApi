@@ -20,10 +20,31 @@ namespace JwtWebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<List<Tip>>> GetAllTips()
+        public async Task<ActionResult<List<Tip>>> GetAllTips(int id)
         {
-            return Ok(await _context.Tips.ToListAsync());
+            /* //return Ok(await _context.Tips.ToListAsync());
+             User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+             // если не найден, отправляем статусный код и сообщение об ошибке
+             if (user == null) 
+                 return NotFound(new { message = "Пользователь не найден" });
+
+             // если пользователь найден, отправляем его
+             return Ok(user);*/
+            var user = _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user = _context.Users
+                .Where(u => u.Id == id)
+                .Include(p => p.Tips)
+                .FirstOrDefault();
+
+            return Ok(user);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Tip>>> GetByIdTip(int id)

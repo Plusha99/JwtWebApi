@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JwtWebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230122115512_Initial")]
+    [Migration("20230124190626_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace JwtWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -73,11 +73,11 @@ namespace JwtWebApi.Migrations
 
             modelBuilder.Entity("JwtWebApi.Models.Tip", b =>
                 {
-                    b.HasOne("JwtWebApi.Models.User", "User")
+                    b.HasOne("JwtWebApi.Models.User", null)
                         .WithMany("Tips")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("JwtWebApi.Models.User", b =>
